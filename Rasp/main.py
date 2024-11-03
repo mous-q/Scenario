@@ -12,15 +12,15 @@ def main():
     while True:
         
 
-        print(*scene.show_current())
+        
         txt = get_speech()
         
         try:
             if scene.markers[scene.current] in txt:
                 scene.next()
-                scene.show_current()
+                print(*scene.show_current())
         except IndexError:
-            scene.show_current()
+            print(scene.show_current())
             os._exit()
 
             

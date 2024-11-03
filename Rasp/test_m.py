@@ -8,7 +8,7 @@ def get_speech() -> None:
         print("say anything : ")
         audio= r.listen(source)
         try:
-            text = r.recognize_google(audio)
+            text = r.recognize_google(audio, language='ru-RU')
             return text.lower()
         except:
             print("sorry, could not recognise")

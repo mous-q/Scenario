@@ -33,7 +33,10 @@ class Scenary():
         self.current = 0
 
     def show_current(self):
-        return self.parts[self.current]
+        try:
+            return self.parts[self.current]
+        except IndexError:
+            pass
     
     def next(self):
         self.current += 1

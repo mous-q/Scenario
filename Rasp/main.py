@@ -2,12 +2,12 @@
 def main():
 
     import speech_recognition as sr
-    import os
     from test_m import get_speech
     from text_control import create_markers, get_text, Scenary, cut
 
 
-    scene = Scenary('test-scenary.txt')
+    scene = Scenary('Scenario/Rasp/test-scenary.txt')
+    print(*scene.show_current())
 
     while True:
         
@@ -21,7 +21,9 @@ def main():
                 print(*scene.show_current())
         except IndexError:
             print(scene.show_current())
-            os._exit()
+            break
+        except:
+            pass
 
             
 if __name__ == '__main__':

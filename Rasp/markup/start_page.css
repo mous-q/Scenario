@@ -1,0 +1,46 @@
+button {
+    color: black;
+    border-width: 0;
+    border-radius: 5px;
+    width: 200px;
+    height: 70px;
+    margin: auto auto;
+    background-color: rgb(104, 82, 28);
+    background-image: url("images/button.jpg");
+    background-size: contain;
+    transition: all 0.4s;
+}
+
+a {
+    margin: 10vh auto;
+}
+
+button:hover{
+    background-color: rgb(135, 106, 34);
+    box-shadow: 5px 5px 5px rgb(176, 155, 103),
+                -5px -5px 5px rgb(176, 155, 103);
+    transform: scale(1.01);
+
+    transition: all 0.4s;
+}
+
+div {
+    width: 97vw;
+    height: 97vh;
+    display: flex;
+    margin: auto;
+    background-color: rgb(51, 39, 8);
+    background-image: url("images/start.jpg");
+    background-size: cover;
+    flex-direction: column;
+    justify-content: end;
+}
+
+body {
+    width: 99vw;
+    height: 99vh;
+    background-color: rgb(51, 39, 8);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}

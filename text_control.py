@@ -14,7 +14,7 @@ def cut(text:str, markers:list) -> list:
         except:
             pass
         
-        text = text[a:]
+        text = text[a+len(marker):]
         
     parts.append(text)
     return parts

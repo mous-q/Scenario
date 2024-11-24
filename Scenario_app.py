@@ -5,7 +5,7 @@ from test_m import get_speech
 from text_control import get_text, Scenary, cut
 
 scene = None
-FOLDER = 'C:/Users/mousq/OneDrive/Документы/scenario_project/Scenario/Rasp/scenaries'
+FOLDER = 'scenaries'
 filename=''
 app = Flask(__name__)
 
@@ -68,7 +68,7 @@ def do_prep():
         markers =  request.form['markers'].split('@')
         global scene
 
-        scene = Scenary(f'C:/Users/mousq/OneDrive/Документы/scenario_project/Scenario/Rasp/scenaries/{filename}', markers)
+        scene = Scenary(f'scenaries/{filename}', markers)
         return redirect(url_for('rep'))
     return '''
     <!doctype html>

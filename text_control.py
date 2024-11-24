@@ -1,10 +1,3 @@
-
-def create_markers():
-    
-    print("Input clasterizing phrases with '@;' as a delimiter:")
-    markers = list(map(str.lower, input().split('@;')))
-    return markers
-
 def get_text(filename:str) -> str:
     
     with open(filename, 'r', encoding='utf-8') as file:
@@ -18,17 +11,20 @@ def cut(text:str, markers:list) -> list:
         try:
             a = text.find(marker)
             parts.append([text[:a+len(marker)]])
-            text = text[a:]
         except:
             pass
+        
+        text = text[a:]
+        
+    parts.append(text)
     return parts
             
 
 class Scenary():
-    def __init__(self, file):
+    def __init__(self, file, markers):
 
         self.text = get_text(file)
-        self.markers = create_markers()
+        self.markers = markers
         self.parts = cut(self.text, self.markers)
         self.current = 0
 

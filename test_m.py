@@ -1,6 +1,6 @@
 import speech_recognition as sr
 
-def get_speech() -> None:
+def get_speech() -> str:
 
     r=sr.Recognizer()
     with sr.Microphone() as source:

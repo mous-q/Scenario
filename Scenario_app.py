@@ -1,13 +1,13 @@
 from flask import Flask, request, redirect, url_for, render_template
 import os
-import speech_recognition as sr
-from test_m import get_speech
-from text_control import get_text, Scenary, cut
+from text_control import Scenary
+from main import main
 
 scene = None
 FOLDER = 'scenaries'
 filename=''
 app = Flask(__name__)
+flag = False
 
 app.config['FOLDER'] = FOLDER
 
@@ -19,46 +19,15 @@ def upload_file():
         filename = file.filename
         file.save(os.path.join(app.config['FOLDER'], filename))
         return redirect(url_for('menu'))
-    return '''
-    <!doctype html>
-    <title>Загрузить новый файл</title>
-    <h1>Загрузить новый файл</h1>
-    <form method=post enctype=multipart/form-data>
-      <input type=file name=file>
-      <input type=submit value=Upload>
-    </form>
-    </html>
-    '''
+    return render_template("upload_page.html")
 
 @app.route('/home', methods=['GET', 'POST'])
 def home_page():
-    return '''
-    <!doctype html>
-    <title>It will be a home page</title>
-    <h1>Home page</h1>
-    <form action='/menu'>
-      <input type=submit value="go to menu">
-    </form>
-    </html>
-    '''
+    return render_template("home_page.html")
 
 @app.route('/menu', methods=['GET', 'POST'])
 def menu():
-    return '''
-    <!doctype html>
-    <title>Загрузить новый файл</title>
-    <h1>It is menu</h1>
-    <form action='/scene_upload'>
-    <table>
-      <tr><td><input type=submit value="Upload scene"></td><tr>
-    </table>
-    </form>
-    <form action='/prepare'>
-    <table>
-    <tr><td><input type=submit value="Start rep"></td><tr>
-    </table>
-    </html>
-    '''
+    return render_template("menu_page.html")
 
 @app.route('/prepare', methods=['GET', 'POST'])
 def do_prep():
@@ -70,33 +39,20 @@ def do_prep():
 
         scene = Scenary(f'scenaries/{filename}', markers)
         return redirect(url_for('rep'))
-    return '''
-    <!doctype html>
-    <title>Choose words-markers</title>
-    <h1>Choose words-markers</h1>
-    <form method=post>
-      <input type=text name='markers' placeholder="Input phrases with @ as a delimiter" width=400px>
-    </form>
-    </html>
-    '''
+    return render_template("mark_page.html")
 
 
-@app.route('/rep')
+@app.route('/rep', methods = ['GET', 'POST'])
 def rep():
-        
-    global scene
-    txt = get_speech()
-        
-    try:
-        if scene.markers[scene.current] in txt:
-            scene.next()
-
-    except:
-        pass
-    finally:
-        return render_template("text.html", text=scene.show_current())
+    if request.method == 'POST':
+        return redirect(url_for('foo'))
+    return render_template('RH-page.html')
 
 
+@app.route('/fake')
+def foo():
+    main(scene)
+    return redirect(url_for('home_page'))
 
 
 app.run(debug=True)

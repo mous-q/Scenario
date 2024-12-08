@@ -34,8 +34,10 @@ def do_prep():
     if request.method == 'POST':
         global filename
         print(filename)
-        markers =  request.form['markers'].split('@')
+        markers =  request.form['markers'].lower().split('@')
         global scene
+
+        
 
         scene = Scenary(f'scenaries/{filename}', markers)
         return redirect(url_for('rep'))
@@ -54,6 +56,13 @@ def foo():
     main(scene)
     return redirect(url_for('home_page'))
 
+@app.get('/now')
+def show_current():
+    with open('current.txt', 'r', encoding='utf-8') as file:
+        c_text = file.read()
 
-app.run(debug=True)
+    return render_template('new_page.html', text = c_text)
+
+if __name__ == '__main__':
+    app.run(debug=True)
 

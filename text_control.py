@@ -10,7 +10,7 @@ def cut(text:str, markers:list) -> list:
     for marker in markers:
         try:
             a = text.find(marker)
-            parts.append([text[:a+len(marker)]])
+            parts.append(text[:a+len(marker)])
         except:
             pass
         

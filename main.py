@@ -1,4 +1,3 @@
-from trash.test_m import get_speech
 from text_control import Scenary
 from vosk import Model, KaldiRecognizer
 import os

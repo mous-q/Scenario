@@ -1,12 +1,13 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="../static/new_page.css">
-    <meta http-equiv="refresh" content="5">
     <title>Document</title>
 </head>
+
 <body>
     <header class="header">
         <a href="/home" class="logo">Scenario.</a>
@@ -17,8 +18,52 @@
     </header>
     <section class="now">
         <div class="content">
-            <p class = "current">{{ text }}</p>
+            <p class="current" id="text">Загрузка...</p>
+
         </div>
     </section>
+    <script>
+        function makeAjax() {
+            // Create and Send the request
+            let fetch_status;
+            fetch('http://127.0.0.1:5000/newtext', {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json;charset=UTF-8"
+                }
+            })
+                .then(function (response) {
+                    // Save the response status in a variable to use later.
+                    fetch_status = response.status;
+                    // Handle success
+                    // eg. Convert the response to JSON and return
+                    return response.json();
+                })
+                .then(function (json) {
+                    // Check if the response were success
+                    if (fetch_status == 200) {
+                        // Use the converted JSON
+                        //console.log(json);
+                        // сюда обработку
+                        if (json.text)
+                            placeText(json.text)
+                    }
+                })
+                .catch(function (error) {
+                    // Catch errors
+                    console.error(error);
+                });
+        }
+        function placeText(text) {
+            const textElem = document.getElementById('text');
+            if (textElem)
+                textElem.innerText = text;
+        }
+        makeAjax();
+        setInterval(makeAjax, 1000);
+
+
+    </script>
 </body>
+
 </html>

@@ -2,6 +2,7 @@ from flask import Flask, request, redirect, url_for, render_template
 import os
 from text_control import Scenary
 from main import main
+from flask import jsonify
 
 scene = None
 FOLDER = 'scenaries'
@@ -58,10 +59,17 @@ def foo():
 
 @app.get('/now')
 def show_current():
+
+    return render_template('new_page.html')
+ 
+@app.get('/newtext')
+def show_current_text():
     with open('current.txt', 'r', encoding='utf-8') as file:
         c_text = file.read()
 
-    return render_template('new_page.html', text = c_text)
+    data = { "text" : c_text } 
+    return jsonify(data)
+
 
 if __name__ == '__main__':
     app.run(debug=True)

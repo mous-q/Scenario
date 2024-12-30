@@ -3,12 +3,14 @@ import os
 from text_control import Scenary
 from main import main
 from flask import jsonify
+from multiprocessing import Process, Queue 
 
 scene = None
 FOLDER = 'scenaries'
-filename=''
+filename='' 
 app = Flask(__name__)
 flag = False
+main_queue = Queue()
 
 app.config['FOLDER'] = FOLDER
 
@@ -54,7 +56,8 @@ def rep():
 
 @app.route('/fake')
 def foo():
-    main(scene)
+    p = Process(target=main, args=(scene, main_queue))
+    p.start()
     return redirect(url_for('home_page'))
 
 @app.get('/now')
@@ -64,10 +67,12 @@ def show_current():
  
 @app.get('/newtext')
 def show_current_text():
-    with open('current.txt', 'r', encoding='utf-8') as file:
-        c_text = file.read()
+    c_text, roles, next = main_queue.get()
+    print(c_text, roles, next)
+    roles = ' '.join(roles)
+    next = ' '.join(next)
 
-    data = { "text" : c_text } 
+    data = { "text" : c_text , "roles": roles, "next" : next } 
     return jsonify(data)
 
 

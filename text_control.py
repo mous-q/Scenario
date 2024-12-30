@@ -1,22 +1,38 @@
+from part_cls import Part
+
 def get_text(filename:str) -> str:
     
     with open(filename, 'r', encoding='utf-8') as file:
-        return file.read().replace('\n', ' ').lower()
+        return file.read().replace('\n', ' ')
     
 def cut(text:str, markers:list) -> list:
     
-    parts = []
+    parts: list[Part] = []
+    roles: set[str] = set()
 
     for marker in markers:
+        roles.clear()
         try:
-            a = text.find(marker)
-            parts.append(text[:a+len(marker)])
+            a = text.lower().find(marker)
+            txt = text[:a+len(marker)]
+            for word in txt.split():
+                if word.upper() == word:
+                    roles.add(word)
+            part = Part(txt, marker, roles)
+            parts.append(part)
         except:
             pass
+    
+    
+    roles.clear()
+    txt = text[a+len(markers[-1]):]
+    for word in text.split():
+        if word.upper() == word:
+                roles.add(word)
+    part = Part(txt, "", roles)
+
         
-        text = text[a+len(marker):]
-        
-    parts.append(text)
+    parts.append(part)
     return parts
             
 
@@ -26,13 +42,20 @@ class Scenary():
         self.text = get_text(file)
         self.markers = markers
         self.parts = cut(self.text, self.markers)
-        self.current = 0
+        self._current = 0
 
-    def show_current(self):
+    def info(self):
         try:
-            return self.parts[self.current]
+            part: Part = self.parts[self._current]
+            next_part: Part = self.parts[self._current+1]
+            return part.text, part.roles, next_part.roles
         except IndexError:
-            pass
+            part: Part = self.parts[-1]
+            return part.text, part.roles, ''
+
+    def marker(self) -> str:
+        part: Part = self.parts[self._current]
+        return part.marker
     
     def next(self):
-        self.current += 1
+        self._current += 1

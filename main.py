@@ -1,8 +1,8 @@
 from text_control import Scenary
 from vosk import Model, KaldiRecognizer
-import os
 import pyaudio
-def main(scene: Scenary):
+from multiprocessing import Queue
+def main(scene: Scenary, q: Queue):
 
     
 
@@ -17,12 +17,10 @@ def main(scene: Scenary):
         frames_per_buffer=44100
     )
     stream.start_stream()
-
-    print(scene.show_current())
+    q.put([*scene.info()])
 
     while True:
-
-        
+        flag = False
         
         try:
             data = stream.read(44100)
@@ -30,16 +28,18 @@ def main(scene: Scenary):
                 txt = rec.Result()
             else:
                 txt = rec.PartialResult()
-            print(txt)
-            if len(set(scene.markers[scene.current].split()) & set(txt.split())) >= len(scene.markers[scene.current].split())//2:
+            txt = ''.join([i for i in txt if i in set('йцукенгшщзхъфывапролджэячсмитьбю ')])
+            if len(set(scene.marker().split()) & set(txt.split())) >= (len(set(scene.marker().split()))//2):
                 scene.next()
+                q.put([*scene.info()])
+                flag = False
             
         except IndexError:
             break
 
         except:
             pass
-
+        
         finally:
-            with open('current.txt', 'w', encoding='utf-8') as file:
-                file.write(scene.show_current())
+            if not flag:
+                q.put(scene.info())

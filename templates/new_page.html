@@ -18,7 +18,9 @@
     </header>
     <section class="now">
         <div class="content">
+            <p id="roles">Загрузка...</p>
             <p class="current" id="text">Загрузка...</p>
+            <p id="next">Загрузка...</p>
 
         </div>
     </section>
@@ -46,7 +48,7 @@
                         //console.log(json);
                         // сюда обработку
                         if (json.text)
-                            placeText(json.text)
+                            placeText(json.text, json.roles, json.next)
                     }
                 })
                 .catch(function (error) {
@@ -54,10 +56,16 @@
                     console.error(error);
                 });
         }
-        function placeText(text) {
+        function placeText(text, roles, next) {
             const textElem = document.getElementById('text');
+            const rolesElem = document.getElementById('roles');
+            const nextElem = document.getElementById('next');
             if (textElem)
                 textElem.innerText = text;
+            if (rolesElem)
+                rolesElem.innerText = roles;
+            if (nextElem)
+                nextElem.innerText = next
         }
         makeAjax();
         setInterval(makeAjax, 1000);

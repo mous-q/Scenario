@@ -3,7 +3,7 @@ from part_cls import Part
 def get_text(filename:str) -> str:
     
     with open(filename, 'r', encoding='utf-8') as file:
-        return file.read().replace('\n', ' ')
+        return file.read()
     
 def cut(text:str, markers:list) -> list:
     
@@ -13,21 +13,24 @@ def cut(text:str, markers:list) -> list:
     for marker in markers:
         roles.clear()
         try:
-            a = text.lower().find(marker)
-            txt = text[:a+len(marker)]
+            a = text.lower().replace('\n', '').find(marker)
+            txt = text[:a+len(marker)+text[:a+len(marker)].count('\n')]
+            text = text[a+len(marker)+text[:a+len(marker)].count('\n'):]
+            print(text)
             for word in txt.split():
-                if word.upper() == word:
-                    roles.add(word)
-            part = Part(txt, marker, roles)
+                if word.strip('\n.').upper() == word.strip('\n') and len(word) > 3:
+                    roles.add(word.strip('\n'))
+            print(roles)
+            part = Part(txt, marker, list(roles))
             parts.append(part)
         except:
             pass
     
     
     roles.clear()
-    txt = text[a+len(markers[-1]):]
-    for word in text.split():
-        if word.upper() == word:
+    txt = text
+    for word in txt.split():
+        if word.strip('\n').upper() == word.strip():
                 roles.add(word)
     part = Part(txt, "", roles)
 

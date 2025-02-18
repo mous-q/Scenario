@@ -55,7 +55,18 @@ body {
 }
 
 p.current {
+    color: #dfc3a9;
+    margin-top: 15vh;
+    margin-bottom: 15vh;
+    text-align: left;
+}
+
+p.role {
     color: #f2a74b;
-    margin-top: 25px;
-    margin-bottom: 25px;;
+    margin-top: 5px;
+}
+
+p.next {
+    color: #c44133;
+    margin-top: 5px;
 }

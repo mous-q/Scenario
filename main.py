@@ -4,7 +4,7 @@ import pyaudio
 from multiprocessing import Queue
 def main(scene: Scenary, q: Queue):
 
-    
+    q.put(scene.info())
 
     model = Model(r"vosk-model-small")
     rec = KaldiRecognizer(model, 44100)
@@ -20,7 +20,7 @@ def main(scene: Scenary, q: Queue):
     q.put([*scene.info()])
 
     while True:
-        flag = False
+
         
         try:
             data = stream.read(44100)
@@ -31,15 +31,13 @@ def main(scene: Scenary, q: Queue):
             txt = ''.join([i for i in txt if i in set('йцукенгшщзхъфывапролджэячсмитьбю ')])
             if len(set(scene.marker().split()) & set(txt.split())) >= (len(set(scene.marker().split()))//2):
                 scene.next()
-                q.put([*scene.info()])
-                flag = False
             
         except IndexError:
+            q.put(scene.info())
             break
 
         except:
             pass
         
         finally:
-            if not flag:
-                q.put(scene.info())
+            q.put(scene.info())

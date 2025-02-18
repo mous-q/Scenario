@@ -36,7 +36,6 @@ def menu():
 def do_prep():
     if request.method == 'POST':
         global filename
-        print(filename)
         markers =  request.form['markers'].lower().split('@')
         global scene
 
@@ -58,7 +57,7 @@ def rep():
 def foo():
     p = Process(target=main, args=(scene, main_queue))
     p.start()
-    return redirect(url_for('home_page'))
+    return redirect(url_for('show_current'))
 
 @app.get('/now')
 def show_current():
@@ -68,9 +67,10 @@ def show_current():
 @app.get('/newtext')
 def show_current_text():
     c_text, roles, next = main_queue.get()
-    print(c_text, roles, next)
     roles = ' '.join(roles)
     next = ' '.join(next)
+
+    print(c_text, roles, next)
 
     data = { "text" : c_text , "roles": roles, "next" : next } 
     return jsonify(data)

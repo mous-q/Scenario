@@ -2,6 +2,7 @@ from text_control import Scenary
 from vosk import Model, KaldiRecognizer
 import pyaudio
 from multiprocessing import Queue
+
 def main(scene: Scenary, q: Queue):
 
     q.put(scene.info())
@@ -29,8 +30,10 @@ def main(scene: Scenary, q: Queue):
             else:
                 txt = rec.PartialResult()
             txt = ''.join([i for i in txt if i in set('йцукенгшщзхъфывапролджэячсмитьбю ')])
+            print(txt)
             if len(set(scene.marker().split()) & set(txt.split())) >= (len(set(scene.marker().split()))//2):
                 scene.next()
+                q.put(scene.info())
             
         except IndexError:
             q.put(scene.info())
@@ -40,4 +43,5 @@ def main(scene: Scenary, q: Queue):
             pass
         
         finally:
-            q.put(scene.info())
+            if q.empty():
+                q.put(scene.info())

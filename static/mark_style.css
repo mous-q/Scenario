@@ -30,7 +30,6 @@ body {
 }
 
 .navbar a{
-
     font-size: 18px;
     color: #ededed;
     text-decoration: none;
@@ -43,49 +42,115 @@ body {
     color: #f2a74b;
 }
 
-.mark {
+.marker {
     height: 100vh;
     display: flex;
     align-items: center;
     text-align: center;
-    justify-content: center;
+    margin: auto;
 }
 
-.input-box input[type="text"] {
-    width: 40vw;
-    height: 25px;
-    margin-top: 10px;
-    background: transparent;
-    outline: none;
-    border: 2px solid rgba(255 255 255 .2);
-    border-radius: 40px;
-    font-size: 16px;
-    color: #fff;
-    padding: 20px 45px 20px 20px;
+.control {
+    width: 100vw;
 }
 
-.input-box input[type="text"]::placeholder {
-    color: #f2a74b;
+.btns {
+    margin: 10%;
 }
 
-.wrapper input[type="submit"] {
-    width: 150px;
-    height: 50px;
+.control p {
+    margin-top: 40vh;
+}
+
+.container {
+    display: flex;
+    flex-direction: row;
+    min-width: 100%;
+}
+
+.text-show {
+    width: 70%;
+}
+
+.text-array {
+    text-align: end;
+}
+
+.text-container {
+    padding: 20px 30px;
+    font-size: large;
+    text-align: center;
+    overflow: scroll;
+    max-height: 35vh;
+    border-radius: 8px;
+}
+
+.delete-button {
+    margin-left: 15px;
+    border-radius: 5px;
+    border: none;
+    background: #ce131393;
+    color: white;
+    padding: 3px;
+    margin: auto;
+    margin-left: 10px;
+    min-width: 10px;
+    transition: 0.2s;
+}
+
+.delete-button:hover {
+    background: #ce1313;
+}
+
+.outer-box {
+    display: flex;
+    flex-direction: row;
+    border-radius: 8px;
+    background: rgba(215, 157, 11, 0.167);
+    width: fit-content;
+    padding: 4px;
+    margin: 3px;
+}
+
+.btns button {
     background: transparent;
     border-radius: 8px;
     border: 2px solid #f2a74b;
     color: #f2a74b;
     transition: .5s;
-    margin-top: 3vh;
-    margin-left: 5%;
-    font-size: 130%;
+    padding: 8px;
+    font-size: large;
+    width: 130px;
+
 }
 
-.wrapper h3{
-    font-size: 150%;
+.btns button:hover {
+    background: #f2a74b;
+    color: #081b29;
 }
 
-.wrapper input[type="submit"]:hover {
+::selection {
+    background: #f2a74b;
+    color: #081b29;
+}
+
+.text-show {
+    padding: 10px;
+}
+
+input {
+    background: transparent;
+    border-radius: 8px;
+    border: 2px solid #f2a74b;
+    color: #f2a74b;
+    transition: .5s;
+    padding: 8px;
+    font-size: large;
+    width: 130px;
+    margin-top: 2px;
+}
+
+input:hover {
     background: #f2a74b;
     color: #081b29;
 }

@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/mark_style.css" />
+    <title>Scenario</title>
+  </head>
+
+  <body>
+    <header class="header">
+      <a href="/home" class="logo">Scenario.</a>
+
+      <nav class="navbar">
+        <a href="#" class="active"></a>
+      </nav>
+    </header>
+
+    <section class="marker">
+      <div class="container">
+        <div class="text-show">
+          <p class="main_text">{{ text }}</p>
+          <div class="btns">
+            <button onclick="gett()">Add</button>
+            <button onclick="submit()">Submit</button>
+            <form action="/home/create_scenary">
+              <input type="submit" value="Return">
+            </form>
+          </div>
+        </div>
+        <div class="text-array">
+          <div class="text-container" id="text-container"></div>
+        </div>
+      </div>
+      <div class="control"></div>
+      <script>
+        var res = [];
+
+        document.addEventListener("mousedown", () => {
+          selectedText = getSelection().toString();
+        });
+
+        function gett() {
+          if (selectedText) {
+            res.push(selectedText);
+            drawBox();
+          }
+        }
+
+        let counter = 0;
+
+        function deleteElem(number) {
+          res = [...res.slice(0, number), ...res.slice(number + 1)];
+          console.log("delete elem", number, ":", res);
+          drawBox();
+        }
+
+        function drawBox() {
+          const cont = document.getElementById("text-container");
+          cont.innerHTML = "";
+          for (let i = 0; i < res.length; i += 1) {
+            const deleteButton = `<button class="delete-button" onClick="deleteElem(${i})">X</button>`;
+            cont.innerHTML +=
+              `<div class="outer-box"><div class="text-box">${res[i]}</div>` +
+              deleteButton +
+              `</div>`;
+          }
+        }
+
+        async function submit() {
+          const response = await fetch('http://127.0.0.1:5000/home/create_scenary/get_markers', {
+            method: 'POST',
+            headers: {'Content-Type': 'application/json'},
+            body: JSON.stringify({'markers': res})
+          });
+        }
+      </script>
+    </section>
+  </body>
+</html>

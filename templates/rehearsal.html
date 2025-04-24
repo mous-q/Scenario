@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="stylesheet" href="/static/RH_style.css" />
+    <title>Scenario</title>
+  </head>
+  <body>
+    <header class="header">
+      <a href="/home" class="logo">Scenario.</a>
+
+      <nav class="navbar">
+        <a href="#" class="active">Running</a>
+        <a href="https://github.com/mous-q/Scenario">gitHub</a>
+        <a href="#">Contact</a>
+      </nav>
+    </header>
+
+    <section class="run">
+      <div class="content">
+        <h3>Choose Scenary</h3>
+        <div id="filenames"></div>
+        <script>
+          fetch("http://127.0.0.1:5000/files", {
+            method: "GET",
+            headers: {
+              "Content-type": "application/json;charset=UTF-8",
+            },
+          })
+            .then(function (response) {
+              // Save the response status in a variable to use later.
+              fetch_status = response.status;
+              // Handle success
+              // eg. Convert the response to JSON and return
+              return response.json();
+            })
+            .then(function (json) {
+              // Check if the response were success
+              if (fetch_status == 200) {
+                // Use the converted JSON
+                //console.log(json);
+                // сюда обработку
+                const cont = document.getElementById("filenames");
+                if (json.files) {
+                  let files = json.files;
+                  for (let i = 0; i < files.length; ++i) {
+                    cont.innerHTML += `<button class="wrapper" onClick="send_name('${files[i]}')">${files[i]}</button>`;
+                  }
+                }
+              }
+            });
+
+          async function send_name(name) {
+            const response = await fetch(
+              "http://127.0.0.1:5000/home/menu/rehearsal",
+              {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({ 'name': name }),
+              }
+            );
+            window.location.replace('http://127.0.0.1:5000/home/menu/rehearsal/show_current')
+          }
+        </script>
+      </div>
+    </section>
+  </body>
+</html>

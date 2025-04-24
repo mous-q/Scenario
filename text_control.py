@@ -1,51 +1,59 @@
 from part_cls import Part
+import sys
+import os
 
 def get_text(filename:str) -> str:
     
-    with open(filename, 'r', encoding='utf-8') as file:
-        return file.read()
+    try:
+        with open(os.path.join(sys.path[0], os.path.normpath(f'scenaries/{filename}.txt')), 'r', encoding='utf-8') as file:
+            return file.read()
+    except:
+        pass
     
-def cut(text:str, markers:list) -> list:
+
+def get_markers(filename: str) -> list[str]:
+
+    try:
+        with open(os.path.join(sys.path[0], os.path.normpath(f'scenaries/{filename}_mr.txt')), 'r', encoding='utf-8') as file:
+            return file.read().split('@')
+    except:
+        pass
+
+    
+def cut(text:str, markers:list) -> list[Part]:
     
     parts: list[Part] = []
     roles: set[str] = set()
 
-    for marker in markers:
-        roles.clear()
-        try:
-            a = text.lower().replace('\n', '').find(marker)
-            txt = text[:a+len(marker)+text[:a+len(marker)].count('\n')]
-            text = text[a+len(marker)+text[:a+len(marker)].count('\n'):]
-            print(text)
-            for word in txt.split():
-                if word.strip('\n.').upper() == word.strip('\n') and len(word) > 3:
-                    roles.add(word.strip('\n'))
-            print(roles)
-            part = Part(txt, marker, list(roles))
-            parts.append(part)
-        except:
-            pass
-    
-    
-    roles.clear()
-    txt = text
-    for word in txt.split():
-        if word.strip('\n').upper() == word.strip():
-                roles.add(word)
-    part = Part(txt, "", roles)
+    try:
+        for marker in markers:
+            try:
+                i: int = text.find(marker)
+
+                part_text = text[:i+len(marker)].strip('.,;: !?- ')
+                text = text[i+len(marker):].strip('.,;: !?- ')
+
+                part = Part(text=part_text, marker=marker)
+
+                parts.append(part)
+            except:
+                pass
+    except:
+        pass
 
         
-    parts.append(part)
+    parts.append(Part(text, 'empty'))
     return parts
             
 
 class Scenary():
-    def __init__(self, file, markers):
+    def __init__(self, file):
 
-        self.text = get_text(file)
-        self.markers = markers
-        self.parts = cut(self.text, self.markers)
-        self._current = 0
+        self.text: str = get_text(file)
+        self.markers: list[str] = get_markers(file)
+        self.parts: list[Part] = cut(self.text, self.markers)
+        self._current: int = 0
+
 
     def info(self):
         try:
@@ -62,3 +70,5 @@ class Scenary():
     
     def next(self):
         self._current += 1
+
+Scenary('New_Text_Document')
